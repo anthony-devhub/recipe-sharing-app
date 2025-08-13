@@ -1,9 +1,33 @@
-# This file should ensure the existence of records required to run the application in every environment (production,
-# development, test). The code here should be idempotent so that it can be executed at any point in every environment.
-# The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
-#
-# Example:
-#
-#   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
-#     MovieGenre.find_or_create_by!(name: genre_name)
-#   end
+ingredients = [
+  { name: "Flour", unit: "grams" },
+  { name: "Sugar", unit: "grams" },
+  { name: "Eggs", unit: "pcs" },
+  { name: "Butter", unit: "grams" },
+  { name: "Milk", unit: "ml" },
+  { name: "Salt", unit: "grams" },
+  { name: "Baking Powder", unit: "grams" },
+  { name: "Vanilla Extract", unit: "ml" },
+  { name: "Olive Oil", unit: "ml" },
+  { name: "Cocoa Powder", unit: "grams" },
+  { name: "Honey", unit: "grams" },
+  { name: "Yeast", unit: "grams" },
+  { name: "Cheddar Cheese", unit: "grams" },
+  { name: "Tomato Paste", unit: "grams" },
+  { name: "Garlic", unit: "cloves" },
+  { name: "Onion", unit: "pcs" },
+  { name: "Carrot", unit: "pcs" },
+  { name: "Bell Pepper", unit: "pcs" },
+  { name: "Chicken Breast", unit: "grams" },
+  { name: "Salmon Fillet", unit: "grams" },
+  { name: "Basil", unit: "grams" },
+  { name: "Oregano", unit: "grams" },
+  { name: "Black Pepper", unit: "grams" },
+  { name: "Lemon Juice", unit: "ml" },
+  { name: "Soy Sauce", unit: "ml" }
+]
+
+ingredients.each do |ing|
+  Ingredient.find_or_create_by!(ing)
+end
+
+puts "Seeded #{ingredients.size} ingredients"
