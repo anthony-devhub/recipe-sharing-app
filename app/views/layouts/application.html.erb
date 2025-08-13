@@ -18,12 +18,43 @@
     <link rel="apple-touch-icon" href="/icon.png">
 
     <%# Includes all stylesheet files in app/assets/stylesheets %>
-    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag 'application', "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
   </head>
 
   <body>
-    <main class="container mx-auto mt-28 px-5 flex">
+    <nav class="navbar bg-base-100 shadow-md px-4">
+      <div class="flex-1">
+        <a href="/" class="btn btn-ghost normal-case text-xl">Recipe Share</a>
+      </div>
+      <div class="flex-none">
+        <ul class="menu menu-horizontal px-1">
+          <% if user_signed_in? %>
+            <li><%= link_to "Log out", destroy_user_session_path, method: :delete,
+                class: "btn btn-outline btn-error mr-2" %></li>
+          <% else %>
+            <li><%= link_to "Sign In", new_user_session_path, class: "btn btn-primary mr-2" %></li>
+            <li><%= link_to "Sign Up", new_user_registration_path, class: "btn btn-secondary" %></li>
+          <% end %>
+        </ul>
+      </div>
+    </nav>
+
+    <main class="h-screen overflow-hidden flex items-center justify-center" style="background: #edf2f7;">
+      <div class="space-y-2">
+        <% if notice.present? %>
+          <div class="alert alert-success rounded-md shadow">
+            <span><%= notice %></span>
+          </div>
+        <% end %>
+
+        <% if alert.present? %>
+          <div class="alert alert-error rounded-md shadow">
+            <span><%= alert %></span>
+          </div>
+        <% end %>
+      </div>
       <%= yield %>
     </main>
   </body>
