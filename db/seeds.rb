@@ -1,3 +1,20 @@
+# --- Users ---
+users = [
+  { email: "anthony@example.com", password: "password123" },
+  { email: "john_doe@example.com", password: "password123" },
+  { email: "jane_doe@example.com", password: "password123" }
+]
+
+users.each do |u|
+  User.find_or_create_by!(email: u[:email]) do |user|
+    user.password = u[:password]
+    user.password_confirmation = u[:password]
+  end
+end
+
+puts "Seeded #{users.size} demo users"
+
+# --- Ingredients ---
 ingredients = [
   { name: "Flour", unit: "grams" },
   { name: "Sugar", unit: "grams" },
@@ -31,3 +48,43 @@ ingredients.each do |ing|
 end
 
 puts "Seeded #{ingredients.size} ingredients"
+
+# --- Categories & Tags ---
+categories = %w[Breakfast Lunch Dinner Dessert Snack]
+tags = %w[Vegan Vegetarian Gluten-Free Quick Easy]
+
+categories.each { |name| Category.find_or_create_by!(name: name) }
+tags.each { |name| Tag.find_or_create_by!(name: name) }
+
+puts "Seeded #{categories.size} categories and #{tags.size} tags"
+
+# --- Demo Recipes ---
+if Recipe.count == 0
+  User.all.each do |user|
+    2.times do |i|
+      recipe = Recipe.create!(
+        user: user,
+        title: "#{user.email.split('@').first.capitalize}'s Recipe #{i + 1}",
+        description: "Delicious recipe made by #{user.email}",
+        instructions: "Step 1: Do something.\nStep 2: Do something else.",
+        prep_time: rand(5..30),
+        cook_time: rand(10..60)
+      )
+
+      # Assign random ingredients
+      Ingredient.order("RANDOM()").limit(5).each do |ing|
+        recipe.recipe_ingredients.create!(
+          ingredient: ing,
+          quantity: rand(50..500),
+          unit: ing.unit || "grams"
+        )
+      end
+
+      # Assign random category and tag
+      recipe.categories << Category.order("RANDOM()").first
+      recipe.tags << Tag.order("RANDOM()").first
+    end
+  end
+
+  puts "Seeded demo recipes with ingredients, categories, and tags"
+end

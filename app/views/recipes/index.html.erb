@@ -1,0 +1,20 @@
+<h1 class="text-3xl font-bold mb-6">
+  Recipes
+  <%= link_to "New Recipe", new_recipe_path, class: "btn btn-primary btn-sm" %>
+</h1>
+
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+  <% @recipes.each do |recipe| %>
+    <div id="<%= dom_id(recipe) %>" class="card bg-base-100 shadow-xl hover:shadow-2xl transition-shadow cursor-pointer" onclick="location.href='<%= recipe_path(recipe) %>'">
+      <figure>
+        <% #if recipe.photos.attached? %>
+          <%#= image_tag recipe.photos.first.variant(resize_to_limit: [400, 300]), class: "rounded-t-xl" %>
+        <%# end %>
+      </figure>
+      <div class="card-body">
+        <h2 class="card-title"><%= link_to recipe.title, recipe_path(recipe) %></h2>
+        <p><%= truncate(recipe.description, length: 80) %></p>
+      </div>
+    </div>
+  <% end %>
+</div>

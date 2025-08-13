@@ -1,0 +1,27 @@
+<div class="card w-full max-w-3xl bg-base-100 shadow-xl">
+  <div class="card-body">
+    <h1 class="text-2xl font-bold mb-2"><%= @recipe.title %></h1>
+    <p class="mb-4"><%= @recipe.description %></p>
+
+    <div class="flex gap-4 mb-4">
+      <span class="badge badge-info">Prep: <%= @recipe.prep_time %> min</span>
+      <span class="badge badge-success">Cook: <%= @recipe.cook_time %> min</span>
+    </div>
+
+    <h3 class="text-xl font-semibold mb-2">Ingredients</h3>
+    <div id="recipe-ingredients" data-controller="recipe-ingredients" data-recipe-id="<%= @recipe.id %>" data-recipe-ingredients-recipe-id="<%= @recipe.id %>">
+      <%= render partial: "ingredients/loading_placeholder", locals: { recipe: @recipe } %>
+    </div>
+
+    <h3 class="text-xl font-semibold mb-2 mt-4">Instructions</h3>
+    <p><%= simple_format(@recipe.instructions) %></p>
+
+    <% if current_user.id == @recipe.user_id %>
+      <div class="card-actions justify-end">
+        <%= link_to "Edit", edit_recipe_path(@recipe), class: "btn btn-sm btn-outline", data: { turbo: false } %>
+        <%= link_to "Delete", recipe_path(@recipe), method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-sm btn-error" %>
+      </div>
+    <% end %>
+    <%= link_to "Back", recipes_path, class: "btn btn-primary btn-sm" %>
+  </div>
+</div>
