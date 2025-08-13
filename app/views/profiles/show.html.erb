@@ -1,0 +1,18 @@
+<div class="card max-w-3xl bg-base-100 shadow-xl mx-auto my-8 p-6 rounded">
+  <div class="flex items-center space-x-6">
+    <!-- <img src="<%= 'https://via.placeholder.com/100' %>" alt="Avatar" class="w-24 h-24 rounded-full object-cover" /> %> -->
+    <div>
+      <h2 class="card-title text-3xl font-bold"><%= @user.username %></h2>
+      <p class="text-sm"><%= @user.email %></p>
+      <p class="mt-1"><%= @user.bio.presence || 'No bio provided yet.' %></p>
+      <div class="mt-2 flex space-x-4 text-sm">
+        <span class="badge badge-soft badge-info">Joined: <%= @user.created_at.strftime("%b %Y") %></span>
+        <span class="badge badge-soft badge-info">Recipes: <%= 0 %></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="card-actions justify-end mt-6">
+    <%= link_to 'Edit Profile', edit_profile_path, class: "px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700" %>
+  </div>
+</div>
