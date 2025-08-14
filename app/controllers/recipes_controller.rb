@@ -8,7 +8,6 @@ class RecipesController < ApplicationController
   end
 
   def show
-    # Ingredients will be loaded asynchronously using Solid Cache
   end
 
   def new
@@ -47,6 +46,16 @@ class RecipesController < ApplicationController
   def ingredients_async
     @recipe = Recipe.includes(recipe_ingredients: :ingredient).find(params[:id])
     render partial: "recipes/ingredients", locals: { recipe: @recipe }
+  end
+
+  def categories_async
+    @recipe = Recipe.includes(:categories, :tags).find(params[:id])
+    render partial: "recipes/categories", locals: { recipe: @recipe }
+  end
+
+  def tags_async
+    @recipe = Recipe.includes(:tags).find(params[:id])
+    render partial: "recipes/tags", locals: { recipe: @recipe }
   end
 
   private

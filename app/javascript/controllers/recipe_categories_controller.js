@@ -4,7 +4,7 @@ export default class extends Controller {
   connect() {
     const recipeId = this.element.dataset.recipeId
 
-    fetch(`/recipes/${recipeId}/ingredients_async`)
+    fetch(`/recipes/${recipeId}/categories_async`)
       .then(response => response.text())
       .then(html => {
         this.element.innerHTML = html

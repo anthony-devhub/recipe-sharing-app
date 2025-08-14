@@ -7,6 +7,10 @@ Rails.application.routes.draw do
 
   resource :profile, only: [ :show, :edit, :update ]
   resources :recipes do
-    get :ingredients_async, on: :member
+    member do
+      get :categories_async
+      get :tags_async
+      get :ingredients_async
+    end
   end
 end
