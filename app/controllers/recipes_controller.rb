@@ -45,10 +45,9 @@ class RecipesController < ApplicationController
   end
 
   def ingredients_async
-    @recipe = Recipe.find(params[:id])
+    @recipe = Recipe.includes(recipe_ingredients: :ingredient).find(params[:id])
     render partial: "recipes/ingredients", locals: { recipe: @recipe }
   end
-
 
   private
 

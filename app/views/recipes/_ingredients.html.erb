@@ -1,5 +1,7 @@
-<ul class="list-disc list-inside">
-  <% recipe.recipe_ingredients.each do |ri| %>
-    <li><%= ri.ingredient.name %> - <%= ri.quantity %> <%= ri.unit || ri.ingredient.unit %></li>
-  <% end %>
-</ul>
+<% cache [ "recipe-ingredients", recipe.cache_key_with_version ], expires_in: 12.hours do %>
+  <ul class="list-disc list-inside">
+    <% recipe.recipe_ingredients.each do |ri| %>
+      <li><%= ri.ingredient.name %> - <%= ri.quantity %> <%= ri.unit || ri.ingredient.unit %></li>
+    <% end %>
+  </ul>
+<% end %>
