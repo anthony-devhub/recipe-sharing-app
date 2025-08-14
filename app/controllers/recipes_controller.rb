@@ -12,6 +12,7 @@ class RecipesController < ApplicationController
 
   def new
     @recipe = current_user.recipes.build
+    @recipe.recipe_ingredients.build
   end
 
   def create
@@ -26,10 +27,12 @@ class RecipesController < ApplicationController
   end
 
   def edit
+    @recipe.recipe_ingredients.build if @recipe.recipe_ingredients.empty?
   end
 
   def update
     if @recipe.update(recipe_params)
+      @recipe.touch
       redirect_to @recipe, notice: "Recipe updated successfully!"
     else
       load_categories
@@ -67,7 +70,8 @@ class RecipesController < ApplicationController
   def recipe_params
     params.require(:recipe).permit(
       :title, :description, :instructions, :prep_time, :cook_time,
-      category_ids: [], ingredient_ids: [], recipe_ingredients_attributes: [ :id, :ingredient_id, :quantity, :unit, :_destroy ]
+      category_ids: [], tag_ids: [], ingredient_ids: [],
+      recipe_ingredients_attributes: [ :id, :ingredient_id, :quantity, :unit, :_destroy ]
     )
   end
 
