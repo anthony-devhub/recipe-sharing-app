@@ -1,0 +1,7 @@
+<%= form_with(model: [recipe, Comment.new], data: { controller: "comments" }) do |form| %>
+  <div class="flex flex-col mb-3">
+    <%= form.label :content, "Add comment", class: "form-label flex-1" %>
+    <%= form.text_area :content, class: "form-control flex-1", rows: 3 %>
+  </div>
+  <%= form.submit "Post Comment", class: "btn btn-primary" %>
+<% end %>
