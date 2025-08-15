@@ -6,4 +6,11 @@ Rails.application.routes.draw do
   root to: "home#index"
 
   resource :profile, only: [ :show, :edit, :update ]
+  resources :recipes do
+    member do
+      get :categories_async
+      get :tags_async
+      get :ingredients_async
+    end
+  end
 end
