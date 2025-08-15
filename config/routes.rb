@@ -7,6 +7,7 @@ Rails.application.routes.draw do
 
   resource :profile, only: [ :show, :edit, :update ]
   resources :recipes do
+    resources :comments, only: [ :create ]
     member do
       get :categories_async
       get :tags_async

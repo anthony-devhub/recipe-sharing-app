@@ -35,6 +35,23 @@
       </div>
     </div>
 
+    <!-- Comments Form -->
+    <% if user_signed_in? %>
+      <div class="mb-6">
+        <%= render partial: "comments/form", locals: { recipe: @recipe, comment: @recipe.comments.new } %>
+      </div>
+    <% end %>
+    
+    <!-- Comments List -->
+    <%= turbo_stream_from "comments" %>
+    <div id="comments" class="space-y-4">
+      <% if @recipe.comments.any? %>
+        <%= render @recipe.comments.order(created_at: :desc) %>
+      <% else %>
+        <p class="text-sm text-gray-500">No comments yet. Be the first to comment!</p>
+      <% end %>
+    </div>
+
     <% if current_user.id == @recipe.user_id %>
       <div class="card-actions justify-end">
         <%= link_to "Edit", edit_recipe_path(@recipe), class: "btn btn-sm btn-outline", data: { turbo: false } %>
