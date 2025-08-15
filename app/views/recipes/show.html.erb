@@ -1,5 +1,11 @@
 <div class="card w-full max-w-3xl bg-base-100 shadow-xl overflow-y-auto max-h-[80vh]">
   <div class="card-body">
+    <% if @recipe.photo.attached? %>
+      <div class="mb-4">
+        <%= image_tag @recipe.photo, 
+                      class: "rounded-lg shadow-md" %>
+      </div>
+    <% end %>
     <div class="flex items-center justify-between mb-4">
       <h1 class="items-start text-2xl font-bold mb-2"><%= @recipe.title %></h1>
 

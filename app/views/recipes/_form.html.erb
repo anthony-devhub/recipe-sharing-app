@@ -15,6 +15,13 @@
     <%= f.text_field :title, class: "input input-bordered w-full" %>
   </div>
 
+  <div data-controller="direct-upload">
+    <%= f.file_field :photo, direct_upload: true, data: { direct_upload_target: "input" } %>
+
+    <div data-direct-upload-target="progress"></div>
+    <div data-direct-upload-target="preview"></div>
+  </div>
+
   <div class="flex flex-row gap-16">
     <div class="flex flex-1 flex-col">
       <div class="form-control">
@@ -92,7 +99,6 @@
 
     <button class="btn btn-outline btn-sm mt-2" data-action="click->ingredients#add">Add Ingredient</button>
   </div>
-
 
   <div class="flex flex-row gap-16">
     <div class="flex-1 form-control mt-4">

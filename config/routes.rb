@@ -14,4 +14,13 @@ Rails.application.routes.draw do
       get :ingredients_async
     end
   end
+
+  direct :rails_public_blob do |blob|
+    route_for(
+      :rails_service_blob,
+      blob.signed_id,
+      blob.filename,
+      host: Rails.application.config.asset_host
+    )
+  end
 end
