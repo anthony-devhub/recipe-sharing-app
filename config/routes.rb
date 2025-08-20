@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   get "profiles/edit"
   get "profiles/update"
   devise_for :users
-  root to: "home#index"
+  root to: "recipes#index"
 
   resource :profile, only: [ :show, :edit, :update ]
   resources :recipes do

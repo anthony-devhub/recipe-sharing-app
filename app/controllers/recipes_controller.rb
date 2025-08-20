@@ -15,6 +15,9 @@ class RecipesController < ApplicationController
     @recipe.recipe_ingredients.build
   end
 
+  def edit
+    @recipe.recipe_ingredients.build if @recipe.recipe_ingredients.empty?
+  end
   def create
     @recipe = current_user.recipes.build(recipe_params)
     if @recipe.save
@@ -26,9 +29,6 @@ class RecipesController < ApplicationController
     end
   end
 
-  def edit
-    @recipe.recipe_ingredients.build if @recipe.recipe_ingredients.empty?
-  end
 
   def update
     if @recipe.update(recipe_params)
@@ -68,10 +68,10 @@ class RecipesController < ApplicationController
   end
 
   def recipe_params
-    params.require(:recipe).permit(
-      :title, :description, :instructions, :prep_time, :cook_time, :photo,
+    params.expect(
+      recipe: [ :title, :description, :instructions, :prep_time, :cook_time, :photo,
       category_ids: [], tag_ids: [], ingredient_ids: [],
-      recipe_ingredients_attributes: [ :id, :ingredient_id, :quantity, :unit, :_destroy ]
+      recipe_ingredients_attributes: [ :id, :ingredient_id, :quantity, :unit, :_destroy ] ]
     )
   end
 
