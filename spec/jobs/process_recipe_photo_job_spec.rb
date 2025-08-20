@@ -8,7 +8,7 @@ RSpec.describe ProcessRecipePhotoJob, type: :job do
   before do
     # Attach a test image
     recipe.photo.attach(
-      io: File.open(Rails.root.join("spec/fixtures/valid_image.jpg")),
+      io: Rails.root.join("spec/fixtures/valid_image.jpg").open,
       filename: "test_image.jpg",
       content_type: "image/jpeg"
     )

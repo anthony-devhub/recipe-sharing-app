@@ -10,7 +10,7 @@ FactoryBot.define do
     trait :with_photo do
       after(:build) do |recipe|
         recipe.photo.attach(
-          io: File.open(Rails.root.join('spec/fixtures/valid_image.jpg')),
+          io: Rails.root.join('spec/fixtures/valid_image.jpg').open,
           filename: 'recipe.jpg',
           content_type: 'image/jpeg'
         )

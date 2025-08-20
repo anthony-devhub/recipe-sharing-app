@@ -12,7 +12,7 @@ users.each do |u|
   end
 end
 
-puts "Seeded #{users.size} demo users"
+Rails.logger.debug { "Seeded #{users.size} demo users" }
 
 # --- Ingredients ---
 ingredients = [
@@ -47,7 +47,7 @@ ingredients.each do |ing|
   Ingredient.find_or_create_by!(ing)
 end
 
-puts "Seeded #{ingredients.size} ingredients"
+Rails.logger.debug { "Seeded #{ingredients.size} ingredients" }
 
 # --- Categories & Tags ---
 categories = %w[Breakfast Lunch Dinner Dessert Snack]
@@ -56,11 +56,11 @@ tags = %w[Vegan Vegetarian Gluten-Free Quick Easy]
 categories.each { |name| Category.find_or_create_by!(name: name) }
 tags.each { |name| Tag.find_or_create_by!(name: name) }
 
-puts "Seeded #{categories.size} categories and #{tags.size} tags"
+Rails.logger.debug { "Seeded #{categories.size} categories and #{tags.size} tags" }
 
 # --- Demo Recipes ---
 if Recipe.count == 0
-  User.all.each do |user|
+  User.find_each do |user|
     2.times do |i|
       recipe = Recipe.create!(
         user: user,
@@ -86,5 +86,5 @@ if Recipe.count == 0
     end
   end
 
-  puts "Seeded demo recipes with ingredients, categories, and tags"
+  Rails.logger.debug "Seeded demo recipes with ingredients, categories, and tags"
 end

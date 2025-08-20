@@ -36,7 +36,7 @@ class Recipe < ApplicationRecord
   def acceptable_photo
     return unless photo.attached?
 
-    unless photo.blob.byte_size <= 10.megabyte
+    unless photo.blob.byte_size <= 10.megabytes
       errors.add(:photo, "is too large (max 10MB)")
     end
 
