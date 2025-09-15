@@ -1,11 +1,21 @@
 # This file is copied to spec/ when you run 'rails generate rspec:install'
 require 'spec_helper'
+require 'simplecov'
 ENV['RAILS_ENV'] ||= 'test'
+SimpleCov.start 'rails' do
+  add_filter '/bin/'
+  add_filter '/db/'
+  add_filter '/spec/'
+  add_filter 'app/helpers'
+  add_filter 'app/mailers'
+  add_filter 'app/controllers'
+  minimum_coverage 90
+end
 require_relative '../config/environment'
 # Prevent database truncation if the environment is production
 abort("The Rails environment is running in production mode!") if Rails.env.production?
 require 'rspec/rails'
-require 'simplecov'
+
 require 'supports/active_record_encryption'
 require 'devise'
 # require 'supports/test_helpers'
@@ -34,15 +44,6 @@ begin
   ActiveRecord::Migration.maintain_test_schema!
 rescue ActiveRecord::PendingMigrationError => e
   abort e.to_s.strip
-end
-SimpleCov.start 'rails' do
-  add_filter '/bin/'
-  add_filter '/db/'
-  add_filter '/spec/'
-  add_filter 'app/helpers'
-  add_filter 'app/mailers'
-  add_filter 'app/controllers'
-  minimum_coverage 90
 end
 
 RSpec.configure do |config|

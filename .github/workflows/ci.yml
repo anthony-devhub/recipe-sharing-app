@@ -3,7 +3,7 @@ name: CI
 on:
   pull_request:
   push:
-    branches: [ main ]
+    branches: [ staging, production, feature/ci-cd ]
 
 jobs:
   scan_ruby:
@@ -62,15 +62,10 @@ jobs:
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: recipe_sharing_app_test
         ports:
           - 5432:5432
         options: --health-cmd="pg_isready" --health-interval=10s --health-timeout=5s --health-retries=3
-
-      # redis:
-      #   image: redis
-      #   ports:
-      #     - 6379:6379
-      #   options: --health-cmd "redis-cli ping" --health-interval 10s --health-timeout 5s --health-retries 5
 
     steps:
       - name: Install packages
@@ -85,12 +80,17 @@ jobs:
           ruby-version: .ruby-version
           bundler-cache: true
 
-      - name: Run tests
+      - name: Database config
+        run: cp config/database.yml.example config/database.yml
+
+      - name: Prepare test database
         env:
           RAILS_ENV: test
-          DATABASE_URL: postgres://postgres:postgres@localhost:5432/recipe_sharing_app_test
-          # REDIS_URL: redis://localhost:6379/0
-        run: bin/rails db:test:prepare test test:system
+          # DATABASE_URL: postgres://postgres:postgres@127.0.0.1:5432/${{ github.workflow }}_test
+        run: bin/rails db:prepare
+
+      - name: Run tests
+        run: bundle exec rspec
 
       - name: Keep screenshots from failed system tests
         uses: actions/upload-artifact@v4
@@ -99,3 +99,14 @@ jobs:
           name: screenshots
           path: ${{ github.workspace }}/tmp/screenshots
           if-no-files-found: ignore
+
+      - name: Upload logs on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: logs
+          path: log/test.log
+          if-no-files-found: ignore
+
+      - name: Audit JS dependencies
+        run: npm audit --audit-level=moderate
