@@ -1,0 +1,37 @@
+version: "3.8"
+
+services:
+  db:
+    image: postgres:16
+    container_name: recipe_sharing_pg
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: "123456789"
+      POSTGRES_DB: recipe_sharing_app_development
+    volumes:
+      - recipe_sharing_pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  web:
+    image: recipe_sharing_app_local:latest
+    container_name: recipe_sharing_web
+    depends_on:
+      - db
+    environment:
+      RAILS_ENV: development
+      # Rails will use this DATABASE_URL to connect; note host "db" (service name)
+      DATABASE_URL: postgres://postgres:123456789@db:5432/recipe_sharing_app_development
+      # If your app needs a master key, set it here
+      RAILS_MASTER_KEY: "${RAILS_MASTER_KEY}"
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./:/rails    # optional: makes code changes visible to the container (dev convenience)
+    command: ["bin/rails", "server", "-b", "0.0.0.0", "-p", "3000"]
+    stdin_open: true
+    tty: true
+
+volumes:
+  recipe_sharing_pgdata:
